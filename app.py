@@ -303,12 +303,12 @@ def return_book(request_id):
 def launch_browser():
     """Triggers default browser window directly to the application link profile."""
     webbrowser.open_new_tab("http://127.0.0.1:5000/")
-
 if __name__ == "__main__":
     init_db()  # Run check routines on sqlite schemas initialization
     
-    # Wait exactly 1.5 seconds for Flask engine to fire up hooks, then launch browser tab
-    Timer(1.5, launch_browser).start()
+    # Check for Render's environment port variable, default to 5000 locally
+    import os
+    port = int(os.environ.get("PORT", 5000))
     
-    # Boot server with reloader set to false to enforce exact singular tab launch sequence instances
-    app.run(debug=True, use_reloader=False)
+    # Boot server open to the network on the dynamic port
+    app.run(host="0.0.0.0", port=port, debug=False)
